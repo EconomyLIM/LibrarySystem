@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="com.Libaray.app.mapper.BookMapper">
+
+	<select id="bookList" resultType="com.Libaray.app.domain.BookDTO">
+		<![CDATA[
+			SELECT bookid, bookname, bookwriter, bookcount FROM book
+		]]>
+	</select>
+	
+	<select id="getBookDTO" resultType="com.Libaray.app.domain.BookDTO">
+		
+			SELECT bookid, bookname, bookwriter, bookcount FROM book
+			where bookid = #{bookId} FOR UPDATE
+		
+	</select>
+	
+	<update id="decrease">
+	<![CDATA[
+        UPDATE book
+        SET bookcount = #{bookCount}
+        WHERE bookid = #{bookId}
+    ]]>
+	</update>
+	
+	<insert id="bookRent">
+	INSERT INTO bookconnection
+	VALUES (bookconnection_seq.nextval, #{bookId}, #{studentNumber}, SYSDATE, null)
+	</insert>
+	
+</mapper>

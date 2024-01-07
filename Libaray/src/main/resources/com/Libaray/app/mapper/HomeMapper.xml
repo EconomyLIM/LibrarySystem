@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="com.Libaray.app.mapper.HomeMapper">
+
+	<select id="getSeat" resultType="com.Libaray.app.domain.SeatDTO">
+	<![CDATA[
+		SELECT connectionseq, s.seatid, seatname, c.studentnumber,
+		TO_CHAR(startdate, 'yyyy-mm-dd HH:mi:ss') as startdate,
+		TO_CHAR(enddate, 'yyyy-mm-dd HH:mi:ss') as enddate,
+		state
+		FROM seat s
+		LEFT JOIN connection c ON s.seatid = c.seatid and startdate < sysdate and sysdate < enddate
+		ORDER BY s.seatID
+	]]>
+	</select>
+	
+	<insert id="signIn">
+		INSERT INTO student(STUDENTNUMBER, STUDENTPWD, STUDENTNAME)
+		VALUES(#{signInCheckDTO.studentNumber}, #{signInCheckDTO.studentPassword}, #{signInCheckDTO.studentName})
+	</insert>
+	
+	<resultMap type="com.Libaray.app.security.domain.AuthVO" id="authMap">
+		<result property="username" column="username"/>
+		<result property="authority" column="authority"/>
+	</resultMap>
+	
+	<resultMap type="com.Libaray.app.security.domain.LoginUserDTO" id="userMap">
+		<id property="studentNumber" column="studentnumber"></id>
+		<result property="studentPassword" column="studentpwd"/>
+		<result property="studentName" column="studentname"/>
+		<collection property="authority" resultMap="authMap"></collection>
+	</resultMap>
+	
+	<select id="read" resultMap="userMap">
+		select studentnumber, studentpwd, studentname, sa.authority from student s
+		LEFT JOIN student_authorities sa ON s.studentnumber = sa.username
+		where studentnumber = #{studentNumber}
+	</select>
+	
+	<insert id="seatReservation">
+		INSERT INTO connection (CONNECTIONSEQ, STUDENTNUMBER, SEATID, STARTDATE, ENDDATE, STATE)
+		VALUES(connection_seq.nextval, #{studentNumber}, #{seatId}, SYSDATE, SYSDATE + (2/24), '사용중')
+	</insert>
+	
+	<update id="seatReturn">
+		UPDATE connection
+		SET enddate = sysdate , state = '사용종료'
+		WHERE connection.connectionseq = #{connectionseq} AND connection.studentNumber= #{studentNumber}
+	</update>
+	
+	<update id="seatExtension">
+	UPDATE connection
+	SET enddate = enddate + INTERVAL '2' HOUR
+	WHERE connection.connectionseq = #{connectionseq} and connection.studentnumber = #{studentNumber}
+	</update>
+	
+	<select id="getExpireseat" resultType="String">
+	<![CDATA[
+	SELECT * FROM connection
+	WHERE state= '사용중' and enddate < sysdate
+	]]>
+	</select>
+	
+	<update id="expiredReservation">
+		UPDATE connection
+		SET state = '사용완료' 
+		WHERE connectionseq IN 
+		<foreach collection="connectionseq" item="connectionseq" open="(" close=")" separator=",">
+			#{connectionseq}
+		</foreach>
+	</update>
+
+</mapper>

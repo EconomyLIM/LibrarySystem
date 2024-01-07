@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd">
+	
+	<security:http pattern="/resources/**" security="none"></security:http>	
+
+	
+	<!-- 표현식 사용 -->
+	<security:http use-expressions="true" >
+	
+	<security:intercept-url pattern="/seat/reservation" access="isAuthenticated()"/>
+
+ <!-- 접근 금지 발생시 -->
+	<security:access-denied-handler ref="studentAccessDeniedHandler"/>
+	
+	<!-- 로그인 페이지 -->
+	<security:form-login
+			login-page="/login"
+			authentication-success-handler-ref="studentLoginSuccessHandler"
+			authentication-failure-url="/login?error=true"
+			default-target-url="/"
+			username-parameter="username"
+			password-parameter="password"
+	/>
+	
+	<!-- 로그아웃 처리 -->
+	<security:logout
+			logout-url="/logout"
+			invalidate-session="true"
+			logout-success-url="/"
+	/>
+	
+	</security:http>
+	
+	<!-- 비밀번호 암호화 -->
+	<bean id="bCryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" ></bean>
+	
+	<security:authentication-manager>
+		<security:authentication-provider user-service-ref="studentDetailsService">
+			<security:password-encoder ref="bCryptPasswordEncoder"></security:password-encoder>
+		</security:authentication-provider>
+	</security:authentication-manager>
+	
+</beans>
