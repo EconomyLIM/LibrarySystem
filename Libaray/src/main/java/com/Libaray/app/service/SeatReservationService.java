@@ -15,4 +15,6 @@ public interface SeatReservationService {
 	int seatExtensionService(int connectionseq, int studentNumber);
 
 	void exprireSeat();
+	
+	int checkReservation(int studentNumber);
 }

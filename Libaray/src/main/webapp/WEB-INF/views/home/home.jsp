@@ -146,7 +146,7 @@
 											window.location.href = "/";
 										}, 
 										error: function() {
-											alert('반납실패 (서버 오류)');
+											alert('취소실패 (서버 오류)');
 										}
 									}) // ajax close
 									
@@ -182,33 +182,37 @@
   <script>
   
   function seatres(){
-	       let f = document.createElement('form');
-
-	      let obj;
-	      obj = document.createElement('input');
-	      obj.setAttribute('type', 'hidden');
-	      obj.setAttribute('name', '${_csrf.parameterName }');
-	      obj.setAttribute('value', '${_csrf.token }');
 	  
-	  	let seatId;
-	  	seatId = document.createElement('input');
-		seatId.setAttribute('type', 'hidden');
-		seatId.setAttribute('name', 'seatId');
-		var chkId = $('.form-check-input:checked').val();
+	  var chkId = $('.form-check-input:checked').val();
 		if(chkId == null){
 			alert('자리를 선택해주세요.');
 			return;
 		}
-		seatId.value = chkId;
-	      
-	     f.appendChild(obj);
-	  f.appendChild(seatId);
-	      f.setAttribute('method', 'post');
-	      f.setAttribute('action', '/seat/reservation');
-	      document.body.appendChild(f);
-	      f.submit();
-	  
-
+		
+		$.ajax({
+			url: "/seat/"+ chkId,
+			method: "post",
+			cache: false,
+			contentType: "application/json; charset=utf-8",
+			beforeSend: function(xhr) {
+				xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}")
+			},
+			success : function(response) {
+				alert(response);
+				window.location.href="/?reservation=success";
+			}, 
+			error: function(response) {
+				if(response.responseText == '로그인 후 이용 가능합니다.'){
+					alert(response.responseText);	
+					window.location.href="/login";
+					return;
+				}
+				alert(response.responseText);
+				window.location.href="/?reservation=error";
+			} // error
+			
+			
+		}) // ajax 
 	  }
 
   </script>
