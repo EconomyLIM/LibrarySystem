@@ -72,5 +72,13 @@
 			#{connectionseq}
 		</foreach>
 	</update>
+	
+	<select id="checkReservation" resultType="int">
+	<![CDATA[
+	SELECT count(*) FROM connection
+	WHERE state= '사용중' and sysdate < enddate and studentNumber = #{studentNumber}
+	]]>
+	
+	</select>
 
 </mapper>

@@ -10,7 +10,10 @@ import org.springframework.transaction.annotation.Transactional;
 import com.Libaray.app.domain.SeatDTO;
 import com.Libaray.app.mapper.HomeMapper;
 
+import lombok.extern.log4j.Log4j;
+
 @Service
+@Log4j
 public class SeatReservationServiceImpl implements SeatReservationService{
 
 	@Autowired
@@ -63,5 +66,13 @@ public class SeatReservationServiceImpl implements SeatReservationService{
 			int rowCnt = this.homeMapper.expiredReservation(connectionseq);
 		}
 	} // exprireSeat
+
+	@Override
+	public int checkReservation(int studentNumber) {
+		
+		log.info("SeatReservationServiceImpl checkReservation call_ studentNumber : " + studentNumber);
+		
+		return this.homeMapper.checkReservation(studentNumber);
+	}
 
 }
