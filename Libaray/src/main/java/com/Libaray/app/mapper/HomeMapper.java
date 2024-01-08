@@ -27,5 +27,7 @@ public interface HomeMapper {
 	
 	public int expiredReservation(@Param("connectionseq") List<String> connectionseq);
 	
+	public int checkReservation(@Param("studentNumber") int studentNumber);
+	
 
 }

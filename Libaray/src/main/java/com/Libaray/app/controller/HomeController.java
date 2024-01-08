@@ -98,22 +98,6 @@ public class HomeController {
 		return "home/login";
 	}
 	
-	@PostMapping("/seat/reservation")
-	public String seatReservation(
-			Principal principal,
-			@RequestParam("seatId") int seatId) {
-		
-		
-		if (principal != null) {
-			int studentNumber = Integer.parseInt(principal.getName());
-			
-			int rowCnt = this.seatReservationService.seatReservationService(studentNumber, seatId);
-			
-			return "redirect:/?reservation=success";
-		}
-		
-		return "redirect:/?reservation=false";
-	}
 	
 	@GetMapping("/seat")
 	public String getSeatList(Model model, Principal principal){
