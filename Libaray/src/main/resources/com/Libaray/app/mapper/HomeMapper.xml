@@ -80,5 +80,16 @@
 	]]>
 	
 	</select>
-
+	
+	<select id="getSeatHistory" resultType="com.Libaray.app.domain.SeatDTO">
+		SELECT * from connection
+		WHERE studentnumber = #{studentNumber}
+	</select>
+	
+	<select id="isSeatReservation" resultType="int">
+	<![CDATA[
+		SELECT COUNT(*) FROM connection
+		WHERE state= '사용중' and sysdate < enddate and seatid = #{seatId}
+		]]>
+	</select>
 </mapper>

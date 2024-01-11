@@ -17,7 +17,7 @@ public interface HomeMapper {
 	
 	public LoginUserDTO read(@Param("studentNumber") int studentNumber);
 	
-	public int seatReservation(@Param("studentNumber") int studentNumber, @Param("seatId") int seatId);
+	public int seatReservation(@Param("studentNumber") Long studentNumber, @Param("seatId") int seatId);
 	
 	public int seatReturn(@Param("connectionseq")int connectionseq, @Param("studentNumber") int studentNumber);
 	
@@ -27,7 +27,10 @@ public interface HomeMapper {
 	
 	public int expiredReservation(@Param("connectionseq") List<String> connectionseq);
 	
-	public int checkReservation(@Param("studentNumber") int studentNumber);
+	public int checkReservation(@Param("studentNumber") Long studentNumber);
 	
+	public List<SeatDTO> getSeatHistory(@Param("studentNumber") int studentNumber) throws SQLException , ClassNotFoundException;
+	
+	public int isSeatReservation (@Param("seatId") int seatId);
 
 }

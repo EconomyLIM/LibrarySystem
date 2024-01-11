@@ -11,7 +11,7 @@
 	<!-- 표현식 사용 -->
 	<security:http use-expressions="true" >
 	
-	<security:intercept-url pattern="/seat/reservation" access="isAuthenticated()"/>
+	<security:intercept-url pattern="/seat/usedhistory" access="isAuthenticated()"/>
 
  <!-- 접근 금지 발생시 -->
 	<security:access-denied-handler ref="studentAccessDeniedHandler"/>

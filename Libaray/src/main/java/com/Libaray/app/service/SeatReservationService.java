@@ -7,6 +7,7 @@ import com.Libaray.app.domain.SeatDTO;
 public interface SeatReservationService {
 	
 	List<SeatDTO> getSeatList();
+	List<SeatDTO> getSeatHitory(int studentNumber);
 	
 	int seatReservationService(int studentNumber, int seatId);
 	
@@ -17,4 +18,6 @@ public interface SeatReservationService {
 	void exprireSeat();
 	
 	int checkReservation(int studentNumber);
+	
+	void seatReservation(Long studentNumber, int seatId) throws Exception;
 }

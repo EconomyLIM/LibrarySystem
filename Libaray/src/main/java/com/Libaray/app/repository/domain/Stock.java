@@ -2,11 +2,13 @@ package com.Libaray.app.repository.domain;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,15 +17,13 @@ import lombok.NoArgsConstructor;
 @Access(AccessType.FIELD)
 @Data
 @NoArgsConstructor
+@Table(name = "stock")
 public class Stock{
 
-	@Id 
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_Sequence")
-	@SequenceGenerator(name="id_Sequence", sequenceName = "ID_SEQ")
+	@Id
 	private Long id;
 	
-	private Long productId;
-	
+	@Column
 	private int quantity;
 
 
