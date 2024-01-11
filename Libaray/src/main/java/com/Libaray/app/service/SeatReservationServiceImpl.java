@@ -97,7 +97,6 @@ public class SeatReservationServiceImpl implements SeatReservationService{
 	@Transactional
 	public void seatReservation(Long studentNumber, int seatId) throws Exception {
 		
-		
 		// 로그인을 했는지
 		if (studentNumber == null) {
 			throw new Exception();
@@ -114,11 +113,7 @@ public class SeatReservationServiceImpl implements SeatReservationService{
 		}
 		
 		int seatReservationCnt = this.homeMapper.seatReservation(studentNumber, seatId);
-		
-		
-		
-		
-		
+
 	} // seatReservation
 
 	

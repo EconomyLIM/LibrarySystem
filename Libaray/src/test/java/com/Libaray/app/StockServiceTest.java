@@ -6,6 +6,9 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,41 +31,71 @@ public class StockServiceTest {
 	@Autowired
 	private PessimisticLockStockService stockService;
 	
-	@Autowired
-	private StockRepository stockRepository;
+	@PersistenceContext
+	private EntityManager entityManager;
 	
-	@Before
-	public void before() {
-		stockRepository.saveAndFlush(new Stock(1L, 100));
-	}
+//	@Before
+//	public void before() {
+//		stockRepository.saveAndFlush(new Stock(1L, 100));
+//	}
 	
 //	@After
 //	public void after() {
 //		stockRepository.deleteAll();
 //	}
+	
 
+
+//	@Test
+//	public void decrease() throws InterruptedException {
+//		int threadCount = 100;
+//        ExecutorService executorService = Executors.newFixedThreadPool(32);
+//        CountDownLatch latch = new CountDownLatch(threadCount);
+//
+//        for (int i = 0; i < threadCount; i++) {
+//            executorService.submit(() -> {
+//                try {
+//                    stockService.decrease(1L, 1);
+//                } finally {
+//                    latch.countDown();
+//                }
+//            });
+//        }
+//
+//        latch.await();
+//
+//        Stock stock = entityManager.find(Stock.class, 1L);
+//
+//        // 100 - (100 * 1) = 0
+//        assertEquals(0, stock.getQuantity());
+//	}
+	
 	@Test
 	public void decrease() throws InterruptedException {
-		int threadCount = 100;
-        ExecutorService executorService = Executors.newFixedThreadPool(32);
-        CountDownLatch latch = new CountDownLatch(threadCount);
+	    int threadCount = 100;
+	    ExecutorService executorService = Executors.newFixedThreadPool(32);
+	    CountDownLatch latch = new CountDownLatch(threadCount);
 
-        for (int i = 0; i < threadCount; i++) {
-            executorService.submit(() -> {
-                try {
-                    stockService.decrease(1L, 1);
-                } finally {
-                    latch.countDown();
-                }
-            });
-        }
+	    for (int i = 0; i < threadCount; i++) {
+	        executorService.submit(() -> {
+	            try {
+	                Stock stock = entityManager.find(Stock.class, 1L);
+	                stockService.decrease(stock.getId(), 1);
+	            } finally {
+	                latch.countDown();
+	            }
+	        });
+	    }
 
-        latch.await();
+	    latch.await();
 
-        Stock stock = stockRepository.findById(1L).orElseThrow();
+	    Stock stock = entityManager.find(Stock.class, 1L);
 
-        // 100 - (100 * 1) = 0
-        assertEquals(0, stock.getQuantity());
+	    System.err.println(stock.getId());
+	    System.err.println(stock.getQuantity());
+	    // 100 - (100 * 1) = 0
+	    assertEquals(0, stock.getQuantity());
 	}
+
 
 }
