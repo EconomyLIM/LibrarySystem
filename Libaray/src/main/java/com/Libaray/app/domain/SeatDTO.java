@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class SeatDTO {
 
-	private int connectionseq;
+	private Long connectionseq;
 	private int seatId;
 	private String seatName;
 	private int studentNumber;

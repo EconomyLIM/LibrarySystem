@@ -12,30 +12,30 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import com.Libaray.app.domain.SeatDTO;
+import com.Libaray.app.mapper.HomeMapper;
 import com.Libaray.app.service.SeatReservationService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration(locations ={"file:src/main/webapp/WEB-INF/spring/*.xml"})
-public class SeatReservationTest {
+public class SeatServiceTest {
 
 	@Autowired
-	SeatReservationService seatReservationService;
+	private HomeMapper homeMapper;
+	
+	@Autowired
+	private SeatReservationService reservationService;
 	
 	@Test
-	public void test() {
+	public void test() throws Exception {
 
+		Long studentNumber = 5L;
+		int seatId = 1;
+		
+		this.reservationService.seatReservation(studentNumber, seatId);
+		
 
-		int studentNumber = 7;
-//		int seatId = 1;
-//		
-//		int rowCnt = this.seatReservationService.seatReservationService(studentNumber, seatId);
-//		
-//		assertEquals(1, rowCnt);
-		
-		List<SeatDTO> list = this.seatReservationService.getSeatHitory(studentNumber);
-		
-		System.out.println(list.toString());
 	}
-
+	
 }
+

@@ -36,23 +36,20 @@
         <!-- End Components Nav -->
 
         <li class="nav-item">
-          <a
-            class="nav-link collapsed"
-            data-bs-target="#forms-nav"
-            data-bs-toggle="collapse"
-            href="#"
-          >
-            <i class="bi bi-journal-text"></i><span>Reading room</span
-            ><i class="bi bi-chevron-down ms-auto"></i>
+          <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
+            <i class="bi bi-journal-text"></i>
+            	<span>열람실</span>
+            <i class="bi bi-chevron-down ms-auto"></i>
           </a>
-          <ul
-            id="forms-nav"
-            class="nav-content collapse"
-            data-bs-parent="#sidebar-nav"
-          >
+          <ul id="forms-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
             <li>
               <a href="forms-elements.html">
-                <i class="bi bi-circle"></i><span>Form Elements</span>
+                <i class="bi bi-circle"></i><span>좌석 예약</span>
+              </a>
+            </li>
+            <li>
+              <a href="/seat/usedhistory">
+                <i class="bi bi-circle"></i><span>이용 내역</span>
               </a>
             </li>
           </ul>

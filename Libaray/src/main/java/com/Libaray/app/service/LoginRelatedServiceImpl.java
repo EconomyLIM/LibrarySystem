@@ -11,7 +11,7 @@ import com.Libaray.app.security.domain.LoginUserDTO;
 public class LoginRelatedServiceImpl implements LoginRelatedService{
 	
 	@Autowired
-	HomeMapper homeMapper;
+	private HomeMapper homeMapper;
 
 	@Override
 	public int signIn(UserDTO signInCheckDTO){

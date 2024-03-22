@@ -28,27 +28,13 @@ public class HomeRestController {
 	@PostMapping(value= "/seat/{seatId}", produces = "application/json; charset=UTF-8")
 	public ResponseEntity<String> seatReservation(
 			Principal principal,
-			@PathVariable int seatId) {
+			@PathVariable int seatId) throws Exception {
 		
+		Long studentNumber = (long) Integer.parseInt(principal.getName());
 		
-		if (principal != null) {
-			int studentNumber = Integer.parseInt(principal.getName());
-			
-			int checkReservation = this.seatReservationService.checkReservation(studentNumber);
-			System.err.println("checkReservation : " + checkReservation);
-			
-			
-			if (checkReservation == 1) {
-				return new ResponseEntity<String>("자리는 하나만 예약할 수 있습니다. ",HttpStatus.INTERNAL_SERVER_ERROR);
-			}
-			
-			int rowCnt = this.seatReservationService.seatReservationService(studentNumber, seatId);
-			
-			return rowCnt == 1 ? new ResponseEntity<String>("열람실 예약에 성공하였습니다.", HttpStatus.OK)
-					: new ResponseEntity<String>("열람실 예약에 실패하였습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+		this.seatReservationService.seatReservation(studentNumber, seatId);
 		
-		return new ResponseEntity<String>("로그인 후 이용 가능합니다.", HttpStatus.INTERNAL_SERVER_ERROR);
+		return new ResponseEntity<String>("열람실 예약에 성공하였습니다.", HttpStatus.CREATED);
 	}
 	
 	
